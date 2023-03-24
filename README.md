@@ -1,5 +1,3 @@
-# gpt_bot
-
 #
 
 ### Telegram bot with Chat_GPT API
