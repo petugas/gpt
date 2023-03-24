@@ -1,11 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv(find_dotenv())
+load_dotenv()
 
 print('started!')
 NUMBERS_ROWS = 4
-
 
 import openai
 import telebot
@@ -15,7 +14,6 @@ bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 
 if not os.path.exists("users"):
     os.mkdir("users")
-
 
 @bot.message_handler(content_types=['text'])
 def msg(message):
@@ -29,20 +27,19 @@ def msg(message):
     if message.text == '/clear':
         with open(f'users/{message.chat.id}.txt', 'w', encoding='utf-8') as file:
             file.write('')
-        return bot.send_message(chat_id=message.chat.id, text='История очищена!')
+        return bot.send_message(chat_id=message.chat.id, text='clear history!')
 
     try:
-        send_message = bot.send_message(chat_id=message.chat.id, text='Обрабатываю запрос, пожалуйста подождите!')
+        send_message = bot.send_message(chat_id=message.chat.id, text='processing request, please wait!')
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-0301",
             messages=[{"role": "user", "content": oldmes},
-                        {"role": "user","content": f'Предыдущие сообщения: {oldmes}; Запрос: {message.text}'}], presence_penalty=0.6)
+                        {"role": "user","content": f'previous messages: {oldmes}; request: {message.text}'}], presence_penalty=0.6)
 
         bot.edit_message_text(text=completion.choices[0].message["content"], chat_id=message.chat.id, message_id=send_message.message_id)
 
         with open(f'users/{message.chat.id}.txt', 'a+', encoding='utf-8') as file:
             file.write(message.text.replace('\n', ' ') + '\n' + completion.choices[0].message["content"].replace('\n', ' ') + '\n')
-
 
         with open(f'users/{message.chat.id}.txt', 'r', encoding='utf-8') as f:
             lines = f.readlines()
