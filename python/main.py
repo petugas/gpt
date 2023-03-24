@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 print('started!')
-NUMBERS_ROWS = 4
+NUMBERS_ROWS = 5
 
 import openai
 import telebot
