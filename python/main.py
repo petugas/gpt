@@ -9,8 +9,8 @@ NUMBERS_ROWS = 5
 import openai
 import telebot
 
-openai.api_key = os.getenv('GPT_TOKEN')
-bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
+openai.api_key = os.getenv('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')
+bot = telebot.TeleBot(os.getenv('6219083756:AAGw0-Kjn-g7sw6dPW3e8OY7LRoutQdCcTA'))
 
 if not os.path.exists("users"):
     os.mkdir("users")
